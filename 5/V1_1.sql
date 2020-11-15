@@ -1,9 +1,9 @@
 use AdventureWorks2012;
 go
 
-/*Создайте scalar-valued функцию, которая будет принимать а качестве входного параметра
-имя группы отделов (HumanResources.Department.GroupName) и возвращать количество
-отделов, входящих в эту группу.
+/*РЎРѕР·РґР°Р№С‚Рµ scalar-valued С„СѓРЅРєС†РёСЋ, РєРѕС‚РѕСЂР°СЏ Р±СѓРґРµС‚ РїСЂРёРЅРёРјР°С‚СЊ Р° РєР°С‡РµСЃС‚РІРµ РІС…РѕРґРЅРѕРіРѕ РїР°СЂР°РјРµС‚СЂР°
+РёРјСЏ РіСЂСѓРїРїС‹ РѕС‚РґРµР»РѕРІ (HumanResources.Department.GroupName) Рё РІРѕР·РІСЂР°С‰Р°С‚СЊ РєРѕР»РёС‡РµСЃС‚РІРѕ
+РѕС‚РґРµР»РѕРІ, РІС…РѕРґСЏС‰РёС… РІ СЌС‚Сѓ РіСЂСѓРїРїСѓ.
 */
 create function HumanResources.getcount(@GroupName nvarchar(50)) 
 returns int as
@@ -14,9 +14,9 @@ go
 
 select HumanResources.getcount ('Manufacturing');
 go
-/*Создайте inline table-valued функцию, которая будет принимать в качестве входного
-параметра id отдела (HumanResources.Department.DepartmentID), а возвращать 3 самых
-старших сотрудника, которые начали работать в отделе с 2005 года.
+/*РЎРѕР·РґР°Р№С‚Рµ inline table-valued С„СѓРЅРєС†РёСЋ, РєРѕС‚РѕСЂР°СЏ Р±СѓРґРµС‚ РїСЂРёРЅРёРјР°С‚СЊ РІ РєР°С‡РµСЃС‚РІРµ РІС…РѕРґРЅРѕРіРѕ
+РїР°СЂР°РјРµС‚СЂР° id РѕС‚РґРµР»Р° (HumanResources.Department.DepartmentID), Р° РІРѕР·РІСЂР°С‰Р°С‚СЊ 3 СЃР°РјС‹С…
+СЃС‚Р°СЂС€РёС… СЃРѕС‚СЂСѓРґРЅРёРєР°, РєРѕС‚РѕСЂС‹Рµ РЅР°С‡Р°Р»Рё СЂР°Р±РѕС‚Р°С‚СЊ РІ РѕС‚РґРµР»Рµ СЃ 2005 РіРѕРґР°.
 */
 create function HumanResources.getemp(@DepartmentID int) 
 returns table as
@@ -32,14 +32,14 @@ go
 
 select * from HumanResources.getemp(3);
 go
-/*Вызовите функцию для каждого отдела, применив оператор CROSS APPLY. Вызовите
-функцию для каждого отдела, применив оператор OUTER APPLY.
+/*Р’С‹Р·РѕРІРёС‚Рµ С„СѓРЅРєС†РёСЋ РґР»СЏ РєР°Р¶РґРѕРіРѕ РѕС‚РґРµР»Р°, РїСЂРёРјРµРЅРёРІ РѕРїРµСЂР°С‚РѕСЂ CROSS APPLY. Р’С‹Р·РѕРІРёС‚Рµ
+С„СѓРЅРєС†РёСЋ РґР»СЏ РєР°Р¶РґРѕРіРѕ РѕС‚РґРµР»Р°, РїСЂРёРјРµРЅРёРІ РѕРїРµСЂР°С‚РѕСЂ OUTER APPLY.
 */
 select * from HumanResources.Department CROSS APPLY HumanResources.getemp(HumanResources.Department.DepartmentID);
 select * from HumanResources.Department OUTER APPLY HumanResources.getemp(HumanResources.Department.DepartmentID);
 go
-/*Измените созданную inline table-valued функцию, сделав ее multistatement table-valued
-(предварительно сохранив для проверки код создания inline table-valued функции).
+/*РР·РјРµРЅРёС‚Рµ СЃРѕР·РґР°РЅРЅСѓСЋ inline table-valued С„СѓРЅРєС†РёСЋ, СЃРґРµР»Р°РІ РµРµ multistatement table-valued
+(РїСЂРµРґРІР°СЂРёС‚РµР»СЊРЅРѕ СЃРѕС…СЂР°РЅРёРІ РґР»СЏ РїСЂРѕРІРµСЂРєРё РєРѕРґ СЃРѕР·РґР°РЅРёСЏ inline table-valued С„СѓРЅРєС†РёРё).
 */
 create function HumanResources.getempv2(@DepartmentID INT) 
 returns @etable table (
